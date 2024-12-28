@@ -6,7 +6,12 @@ $data = mysqli_fetch_array($sql);
 $response = [
     'jemur' => $data['jemur'],
     'posisi' => $data['posisi'],
-    'mode' => $data['mode']
+    'posisiTutup' => $data['posisiTutup'],
+    'mode' => $data['mode'],
+    'cuaca' => $data['cuaca'],
+    'hujan' => $data['hujan'],
+    'cahaya' => $data['cahaya'],
+    
 ];
 
 echo json_encode($response);
