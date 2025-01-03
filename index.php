@@ -1,3 +1,24 @@
+<?php
+include './auth/db.php';
+
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: auth/login.php");
+    exit;
+}
+
+$user_id = $_SESSION['user_id'];
+
+// Ambil username dari database
+$query = "SELECT username FROM users WHERE id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
+
+$username = $user['username'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +26,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Purple Admin</title>
+    <title>smart clothesline</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="./bootstrap/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="./bootstrap/assets/vendors/css/vendor.bundle.base.css">
@@ -17,7 +38,7 @@
     <!-- Layout styles -->
     <link rel="stylesheet" href="./bootstrap/assets/css/style.css">
     <!-- End layout styles -->
-    <link rel="shortcut icon" href="./bootstrap/assets/images/favicon.ico" />
+    <link rel="shortcut icon" href="./bootstrap/assets/images/icon.png" />
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script type="text/javascript">
         // Function to change the status of the jemuran (clothesline)
@@ -158,8 +179,8 @@
         <!-- partial:partials/_navbar.html -->
         <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                <a class="navbar-brand brand-logo" href="index.html"><img src="./bootstrap/assets/images/logo.svg" alt="logo" /></a>
-                <a class="navbar-brand brand-logo-mini" href="index.html"><img src="./bootstrap/assets/images/logo-mini.svg" alt="logo" /></a>
+                <a class="navbar-brand brand-logo" href="index.php">IotClothesline</a>
+                <!-- <a class="navbar-brand brand-logo-mini" href="index.php"><img src="./bootstrap/assets/images/logo-mini.svg" alt="logo" /></a> -->
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-stretch">
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -173,14 +194,11 @@
                                 <span class="availability-status online"></span>
                             </div>
                             <div class="nav-profile-text">
-                                <p class="mb-1 text-black">David Greymaax</p>
+                                <p class="mb-1 text-black"><?php echo $username ?></p>
                             </div>
                         </a>
                         <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
-                            <a class="dropdown-item" href="#">
-                                <i class="mdi mdi-cached me-2 text-success"></i> Activity Log </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="auth/logout.php">
                                 <i class="mdi mdi-logout me-2 text-primary"></i> Signout </a>
                         </div>
                     </li>
@@ -306,8 +324,8 @@
                                 <!--change to offline or busy as needed-->
                             </div>
                             <div class="nav-profile-text d-flex flex-column">
-                                <span class="font-weight-bold mb-2">David Grey. H</span>
-                                <span class="text-secondary text-small">Project Manager</span>
+                                <span class="font-weight-bold mb-2"><?php echo $username ?></span>
+                                <span class="text-secondary text-small">User</span>
                             </div>
                             <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
                         </a>
@@ -442,8 +460,7 @@
                 <!-- partial:partials/_footer.html -->
                 <footer class="footer">
                     <div class="container-fluid d-flex justify-content-between">
-                        <span class="text-muted d-block text-center text-sm-start d-sm-inline-block">Copyright © bootstrapdash.com 2021</span>
-                        <span class="float-none float-sm-end mt-1 mt-sm-0 text-end"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin template</a> from Bootstrapdash.com</span>
+                        <span class="text-muted d-block text-center text-sm-start d-sm-inline-block">Copyright © iotclothesline.com 2024</span>
                     </div>
                 </footer>
                 <!-- partial -->
